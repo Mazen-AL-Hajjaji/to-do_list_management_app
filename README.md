@@ -1,16 +1,17 @@
 # To-Do List Management App
 
-A simple and efficient command-line to-do list management application written in Python that allows you to create, view, complete, and delete tasks with persistent storage.
+A simple command-line to-do list management application written in Python that allows you to create, view, complete, and delete tasks with persistent storage in JSON format.
 
 ## Features
 
-- **Task Management**: Create, view, and manage your daily tasks
-- **Status Tracking**: Mark tasks as completed or pending
+- **View Tasks**: Display all tasks with their completion status (Completed/Pending)
+- **Add Tasks**: Create new tasks with custom descriptions
+- **Mark Complete**: Mark tasks as completed
+- **Mark Pending**: Mark completed tasks as pending again
+- **Delete Tasks**: Remove tasks from the list
 - **Persistent Storage**: Tasks are automatically saved to a JSON file
+- **Input Validation**: Handles invalid inputs gracefully
 - **Interactive Menu**: Easy-to-use command-line interface
-- **Input Validation**: Validates user input to prevent errors
-- **Task Deletion**: Remove completed or unnecessary tasks
-- **Status Toggle**: Switch tasks between completed and pending states
 
 ## Requirements
 
@@ -47,7 +48,7 @@ The program will display a menu with the following options:
 1. View Tasks
 2. Add Task
 3. Complete Task
-4. Padding Task
+4. Pending Task
 5. Delete Task
 6. Exit
 
@@ -60,7 +61,7 @@ Task added.
 1. View Tasks
 2. Add Task
 3. Complete Task
-4. Padding Task
+4. Pending Task
 5. Delete Task
 6. Exit
 
@@ -73,7 +74,7 @@ Your To-Do List:
 1. View Tasks
 2. Add Task
 3. Complete Task
-4. Padding Task
+4. Pending Task
 5. Delete Task
 6. Exit
 
@@ -88,12 +89,15 @@ Task marked as complete.
 
 ## How It Works
 
-1. **Menu System**: Displays an interactive menu for user navigation
-2. **Task Creation**: Collects task descriptions and stores them in memory
-3. **Status Management**: Tracks completion status for each task
-4. **Data Persistence**: Automatically saves tasks to a JSON file
-5. **Input Validation**: Validates user input to prevent errors
-6. **Task Operations**: Supports viewing, adding, completing, and deleting tasks
+1. **Data Loading**: Attempts to load existing tasks from `todo_list.json`, creates empty list if file doesn't exist
+2. **Menu Loop**: Displays interactive menu and processes user input
+3. **Task Operations**: 
+   - View: Shows numbered list with completion status
+   - Add: Prompts for description, validates non-empty input
+   - Complete/Pending: Shows task list, prompts for task number, validates input
+   - Delete: Shows task list, prompts for task number, removes task
+4. **Auto-Save**: All changes are automatically saved to JSON file
+5. **Error Handling**: Validates inputs and provides helpful error messages
 
 ## Data Storage
 
@@ -110,21 +114,50 @@ Tasks are stored in `todo_list.json` with the following structure:
 }
 ```
 
+### File Creation
+
+The `todo_list.json` file is created automatically when you add your first task. If you want to start with pre-existing tasks, you can create the file manually:
+
+1. Create a new file named `todo_list.json` in the same directory as `main.py`
+2. Add the following content:
+
+```json
+{
+  "tasks": [
+    {
+      "description": "Your first task here",
+      "complete": false
+    },
+    {
+      "description": "Another task example",
+      "complete": true
+    }
+  ]
+}
+```
+
+**Note**: The `todo_list.json` file is not tracked by Git (it's in `.gitignore`), so each user will have their own personal task list.
+
 ## File Structure
 
 ```
 to-do_list_management_app/
 ├── main.py              # Main application file
-├── todo_list.json       # Data storage file (created automatically)
+├── todo_list.json       # Data storage file (created when first task is added)
+├── .gitignore          # Git ignore file
 └── README.md           # Documentation
 ```
 
 ## Error Handling
 
-The program includes error handling for:
-- Invalid menu selections
-- Invalid task number inputs
-- File I/O errors during save operations
+The program includes comprehensive error handling:
+
+- **File I/O Errors**: Gracefully handles missing or corrupted JSON files
+- **Invalid Menu Choices**: Displays "Invalid choice. Please try again."
+- **Invalid Task Numbers**: Validates task number input and shows "Invalid task number."
+- **Non-Numeric Input**: Handles non-numeric inputs with "Please enter a valid number."
+- **Empty Task Descriptions**: Prevents empty task descriptions with "Description cannot be empty"
+- **Save Failures**: Shows "Failed to save" if file writing fails
 
 ## License
 

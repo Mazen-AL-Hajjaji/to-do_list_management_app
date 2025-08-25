@@ -83,7 +83,7 @@ def main():
         print("1. View Tasks")
         print("2. Add Task")
         print("3. Complete Task")
-        print("4. Padding Task")
+        print("4. Pending Task")
         print("5. Delete Task")
         print("6. Exit")
 
